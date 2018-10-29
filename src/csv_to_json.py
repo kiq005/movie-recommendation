@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import re, json, os
 
-DIR = os.path.dirname(os.path.abspath(__file__))
+DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'dataset')
 CSV_REGEX = r'(\d+),"?(\[[^\]]+\]|\[\])"?,([^,]+)?,(\d+),"?(\[[^\]]+\]|\[\])"?,(\w+),"?([^\"]+)"?,"?([^\"]+)"?,(\d+\.\d+)?,?"?(\[[^\]]+\]|\[\])"?,"?(\[[^\]]+\]|\[\])"?,(\d{4}-\d{2}-\d{2})?,(\d+),(\d+\.?\d*)?,"?(\[[^\]]+\]|\[\])"?,([^,]+),([^,]+|"[^"]+")?,"?([^\"]+)"?,(\d{1,2}\.\d{1,2}),(\d+)'
 DLIST_REGEX = r'{[^}]+}'
 QUOTES_REGEX = r'(""([^\"]+)"")'
@@ -39,20 +39,25 @@ def get_movie_info(line):
 
 	return movie
 
-movies = []
-num_movies = 0
 
-print()
+def read_movies(path, display_quantity=False):
+	movies = []
+	num_movies = 0
+	with open(path) as f:
+		f.readline() # ignora o cabeçalho
+		for line in f:
+			num_movies += 1
+			m = get_movie_info(line)
+			if m != {}:
+				movies.append(m)
+	if display_quantity:
+		print("Imported: {:d}, Dropped: {:d}".format(len(movies), num_movies - len(movies)))
+	return movies
 
-with open(DIR+'/dataset/tmdb_5000_movies.csv') as f:
-	f.readline() # ignora o cabeçalho
-	for line in f:
-		num_movies += 1
-		m = get_movie_info(line)
-		if m != {}:
-			movies.append(m)
+def save_data(data, path):
+	with open(path, 'w') as f:
+		json.dump(data, f)
 
-with open(DIR+'/dataset/tmdb_5000_movies.json', 'w') as f:
-	json.dump(movies, f)
-
-print("Imported: {:d}, Dropped: {:d}".format(len(movies), num_movies - len(movies)))
+if __name__ == "__main__":
+	movies = read_movies(os.path.join(DIR, 'tmdb_5000_movies.csv'), True)
+	save_data(movies, os.path.join(DIR, 'tmdb_5000_movies.json') )
