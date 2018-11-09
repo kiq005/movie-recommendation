@@ -23,7 +23,7 @@ def get_bigrams(text, language='english'):
 
 #methods: binary_distance, jaccard_distance, masi_distance, edit_distance(com list)
 def compare_bigrams(set_a, set_b, method=nltk.jaccard_distance):
-	return method(set_a, set_b)
+	return 1 - method(set_a, set_b)
 
 if __name__ == '__main__':
 	# Lê dataset
