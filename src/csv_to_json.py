@@ -40,7 +40,7 @@ def get_movie_info(line):
 	return movie
 
 
-def read_movies(path, display_quantity=False):
+def read_movies(path, display_quantity=False, limit=-1):
 	movies = []
 	num_movies = 0
 	with open(path) as f:
@@ -50,6 +50,8 @@ def read_movies(path, display_quantity=False):
 			m = get_movie_info(line)
 			if m != {}:
 				movies.append(m)
+			if limit > 0 and num_movies >= limit:
+				break
 	if display_quantity:
 		print("Imported: {:d}, Dropped: {:d}".format(len(movies), num_movies - len(movies)))
 	return movies
