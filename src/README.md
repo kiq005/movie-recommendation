@@ -4,7 +4,7 @@ O dataset original está no formato .csv, utilize o programa `csv_to_json.py` pa
 Utilize o programa `dist_matrix.py` para gerar a matriz de distânciamento com base no sumário dos filmes. Será gerado um arquivo .txt, e outro .npy, que podem ser utilizados para gerar vizualizações.
 
 # Requisitos
-Python ≥ 3.4
+Python ≥ 3.4 (?)
 * nltk
 * numpy
 * sklearn
@@ -12,7 +12,7 @@ Python ≥ 3.4
 * matplotlib
 
 # TODO
-[ ] Definir arquivos por meio de argumentos do programa
-[ ] Corrigir regex de obtenção dos campos do dataset .csv
-[ ] Trocar acesso ao sys.argv por biblioteca de manipulação de argumentos
+- [ ] Definir arquivos por meio de argumentos do programa
+- [ ] Corrigir regex de obtenção dos campos do dataset .csv
+- [ ] Trocar acesso ao sys.argv por biblioteca de manipulação de argumentos
 
