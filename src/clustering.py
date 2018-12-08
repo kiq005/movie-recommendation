@@ -6,7 +6,6 @@ import numpy as np
 from fastcluster import linkage
 import matplotlib.pyplot as plt
 
-
 DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'dataset')
 methods = ["ward","single","average","complete"]
 
@@ -74,4 +73,5 @@ if __name__ == '__main__':
 	plt.colorbar()
 	plt.xlim([0,N])
 	plt.ylim([0,N])
-	plt.show()
+	#plt.show()
+	plt.savefig(os.path.join(DIR, 'clusters.png'))
