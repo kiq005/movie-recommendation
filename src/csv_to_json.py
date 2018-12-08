@@ -19,13 +19,18 @@ def get_movie_info(line):
 		if len(line) > 16:
 			# Nome em inglês
 			movie['name'] = line[17]
+			if len(movie['name']) < 1:
+				raise
 			# Tagline
-			movie['tagline'] = line[16]
+			if len(line[16]) > 0:
+				movie['tagline'] = line[16]
 		else:
 			# Nome no idioma original
 			movie['name'] = line[6]
 		# Sumário
 		movie['overview'] = line[7]
+		if len(line[7]) < 20:
+			raise
 		## Palavras chave
 		movie['keywords'] = []
 		for k in json.loads(line[4]):
@@ -53,7 +58,7 @@ def read_movies(path, display_quantity=False, limit=-1):
 	num_movies = 0
 	with open(path) as f:
 		f.readline() # ignora o cabeçalho
-		csvdata = csv.reader(f, delimiter=',')
+		csvdata = csv.reader(f, delimiter=',', quoting=csv.QUOTE_MINIMAL)
 		for line in csvdata:
 			num_movies += 1
 			m = get_movie_info(line)
