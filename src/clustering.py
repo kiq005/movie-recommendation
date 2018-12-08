@@ -6,6 +6,7 @@ import numpy as np
 from fastcluster import linkage
 import matplotlib.pyplot as plt
 
+sys.setrecursionlimit(10000)
 DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'dataset')
 methods = ["ward","single","average","complete"]
 
