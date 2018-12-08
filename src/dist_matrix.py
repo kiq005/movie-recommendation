@@ -9,6 +9,14 @@ DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'dataset')
 regex = r"[-'a-zA-ZÀ-ÖØ-öø-ÿ]+"
 
 def get_tokens(text, language):
+	'''
+		input:
+			- text é o texto o qual se deseja obter os tokens
+			- language é o idioma do texto
+		output:
+			- uma lista de tokens
+		Obtém uma lista de tokens sem stop words
+	'''
 	# Obtém as palavras, removendo pontuações e números
 	words = re.findall(regex, text)
 	# Remove stop words
@@ -16,19 +24,57 @@ def get_tokens(text, language):
 	return words
 
 def get_bigrams(text, language='english'):
+	'''
+		input:
+			- text é o texto o qual se deseja construir os bigramas
+			- language é o idioma do texto
+		output:
+			- uma lista de bigramas
+		obtém uma lista de bigramas construidos com base na função get_tokens
+	'''
 	# Obtém os tokens
 	tokens = get_tokens(text, language)
 	# Transforma os tokens para um conjunto de bigramas
 	return set(list(nltk.bigrams(tokens)))
 
+def linear(val):
+	'''
+		input:
+			- o valor numérico entre 0 e 1
+		output:
+			- o valor calculado entre 0 e 1
+		retorna um valor linear do tipo f(x)=x
+	'''
+	return val
+
+def quad(val):
+	'''
+		input:
+			- o valor numérico entre 0 e 1
+		output:
+			- o valor calculado entre 0 e 1
+		retorna um valor linear do tipo f(x)=-x²+2x
+	'''
+	return -(val*val)+2*val
+
 #methods: binary_distance, jaccard_distance, masi_distance, edit_distance(com list)
-def compare_bigrams(set_a, set_b, method=nltk.jaccard_distance):
-	return 1 - method(set_a, set_b)
+def compare_bigrams(set_a, set_b, method=nltk.jaccard_distance, func=quad):
+	'''
+		input:
+			- set_a é o primeiro conjunto de referência
+			- set_b é o segundo conjunto de referência
+			- method é a função com o método de distanciamente dos conjuntos
+			- func é a função de escalonamento do valor de distância obtido
+		output:
+			- o valor de distância calculado
+		calcula a distância entre os conjuntos set_a e set_b, com base no method escalonado pela func
+	'''
+	return func(1 - method(set_a, set_b))
 
 if __name__ == '__main__':
 	# Lê dataset
 	if VERBOSE: print("Lendo dataset...")
-	with open(os.path.join(DIR, 'tmdb_100_movies.json')) as file:
+	with open(os.path.join(DIR, 'tmdb_5000_movies.json')) as file:
 		data = json.load(file)
 	# Obtém a lista de bigramas de cada overview
 	if VERBOSE: print("Obtendo tokens...")
@@ -39,7 +85,7 @@ if __name__ == '__main__':
 			tokens.append(b)
 		else:
 			print('ATENÇÃO: Não foi possível obter bigramas do filme "', movie['name']['english'], '"')
-			#print(b, movie['overview'])
+			#print(b, movie)
 	if VERBOSE: print("Bigramas:", len(tokens))
 	# Constroi a matriz de distância
 	if VERBOSE: print("Construindo matriz de distância...")
