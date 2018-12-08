@@ -58,20 +58,23 @@ def compute_serial_matrix(dist_mat,method="ward"):
 
 
 if __name__ == '__main__':
-	# Importa a matriz de distanciamento
-	dist_matrix = np.load(os.path.join(DIR, 'tmdb_5000_movies.npy'))
-	# Ordena a matriz
-	if len(sys.argv) == 2:
-		if sys.argv[1] in methods:
-			dist_matrix, res_order, res_linkage = compute_serial_matrix(dist_matrix,sys.argv[1])
-		else:
-			print("Methods:", ', '.join(methods))
-			exit(-1)
-	# Exibe a matriz
-	N = len(dist_matrix)
-	plt.pcolormesh(dist_matrix)
-	plt.colorbar()
-	plt.xlim([0,N])
-	plt.ylim([0,N])
-	#plt.show()
-	plt.savefig(os.path.join(DIR, 'clusters.png'))
+    # Importa a matriz de distanciamento
+    dist_matrix = np.load(os.path.join(DIR, 'tmdb_5000_movies.npy'))
+    # Argumento de método
+    method = "ward"
+    if len(sys.argv) == 2:
+        if sys.argv[1] in methods:
+            method = sys.argv[1]
+        else:
+            print("Methods:", ', '.join(methods))
+            exit(-1)
+    # Ordena a matriz
+    dist_matrix, res_order, res_linkage = compute_serial_matrix(dist_matrix,method)
+    # Exibe a matriz
+    N = len(dist_matrix)
+    plt.pcolormesh(dist_matrix)
+    plt.colorbar()
+    plt.xlim([0,N])
+    plt.ylim([0,N])
+    #plt.show()
+    plt.savefig(os.path.join(DIR, 'clusters_%s.png')%(method))
