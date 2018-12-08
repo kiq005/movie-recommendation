@@ -10,9 +10,10 @@ Python ≥ 3.4 (?)
 * sklearn
 * scipy
 * matplotlib
+* fastcluster ≥ 1.1.24 (?)
 
 # TODO
 - [ ] Definir arquivos por meio de argumentos do programa
-- [ ] Corrigir regex de obtenção dos campos do dataset .csv
+- [x] Corrigir regex de obtenção dos campos do dataset .csv
 - [ ] Trocar acesso ao sys.argv por biblioteca de manipulação de argumentos
 
