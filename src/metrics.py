@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import dist_matrix
+from sklearn.feature_extraction.text import TfidfVectorizer
 from collections import Counter
 
 def common_elements(arr, num):
@@ -46,6 +47,34 @@ def get_bigrams(data):
 		bigrams += dist_matrix.get_bigrams(movie['overview'])
 	return bigrams
 
+def tf_idf(corpus, stopwords, top_n_words=9):
+	vectorizer = TfidfVectorizer(stop_words=stopwords, ngram_range=(1,2))
+	X = vectorizer.fit_transform(corpus)
+
+	feature_array = np.array(vectorizer.get_feature_names())
+
+	score_list = []
+	size = len(corpus)
+
+	for i in range(size):
+	    #scores in a single doc
+	    tfidf_score_single_doc = X[i].toarray().flatten()
+	    #ordering
+	    indices = np.argsort(tfidf_score_single_doc)[::-1]
+	    #group feature and score
+	    local_top_features = [(feature_array[j], tfidf_score_single_doc[j]) for j in indices]
+	    #add to global list
+	    score_list.extend(local_top_features)
+
+	#alias
+	top_n = top_n_words
+
+	global_top_features = sorted(score_list, key=lambda score: score[1], reverse=True)[:top_n]
+	#words = [g[0] for g in global_top_features]
+	#scores = [g[1] for g in global_top_features]
+
+	return global_top_features
+
 if __name__ == '__main__':
 	# Get data
 	data = dist_matrix.get_data('tmdb_5000_movies.json')
@@ -56,7 +85,7 @@ if __name__ == '__main__':
 	print("-- Shortest Overview --")
 	print(so['name'])
 	print(so['overview'])
-	
+
 	print("\n-- Longest Overview --")
 	print(lo['name'])
 	print(lo['overview'])
