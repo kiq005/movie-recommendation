@@ -87,7 +87,7 @@ def get_data(file_name):
 if __name__ == '__main__':
 	# Lê dataset
 	if VERBOSE: print("Lendo dataset...")
-	data = get_data('tmdb_5000_movies.json')
+	data = get_data('wiki_movie_plots_deduped.json')
 	# Obtém a lista de bigramas de cada overview
 	if VERBOSE: print("Obtendo tokens...")
 	tokens = []
@@ -107,6 +107,6 @@ if __name__ == '__main__':
 			dist_matrix[i][j] =  compare_bigrams( movie_a, movie_b )
 	if VERBOSE: print("Matriz:", np.shape(dist_matrix))
 	# Exporta a matrix para um arquivo
-	np.save(os.path.join(DIR, 'tmdb_5000_movies.npy'), dist_matrix) # Binário
-	np.savetxt(os.path.join(DIR, 'tmdb_5000_movies.txt'), dist_matrix) # Texto
+	np.save(os.path.join(DIR, 'wiki_movie_plots_deduped.npy'), dist_matrix) # Binário
+	np.savetxt(os.path.join(DIR, 'wiki_movie_plots_deduped.txt'), dist_matrix) # Texto
 

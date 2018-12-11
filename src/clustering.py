@@ -60,7 +60,7 @@ def compute_serial_matrix(dist_mat,method="ward"):
 
 if __name__ == '__main__':
     # Importa a matriz de distanciamento
-    dist_matrix = np.load(os.path.join(DIR, 'tmdb_5000_movies.npy'))
+    dist_matrix = np.load(os.path.join(DIR, 'wiki_movie_plots_deduped.npy'))
     # Argumento de método
     method = "ward"
     if len(sys.argv) == 2:
@@ -73,12 +73,12 @@ if __name__ == '__main__':
     dist_matrix, res_order, res_linkage = compute_serial_matrix(dist_matrix,method)
     #print(dist_matrix)
     #print(res_order)
-    print(res_linkage)
+    #print(res_linkage)
     # Exibe a matriz
-    #N = len(dist_matrix)
-    #plt.pcolormesh(dist_matrix)
-    #plt.colorbar()
-    #plt.xlim([0,N])
-    #plt.ylim([0,N])
+    N = len(dist_matrix)
+    plt.pcolormesh(dist_matrix)
+    plt.colorbar()
+    plt.xlim([0,N])
+    plt.ylim([0,N])
     ##plt.show()
-    #plt.savefig(os.path.join(DIR, 'clusters_%s.png')%(method))
+    plt.savefig(os.path.join(DIR, 'clusters_%s.png')%(method))

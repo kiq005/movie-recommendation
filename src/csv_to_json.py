@@ -4,7 +4,7 @@ import re, csv, json, os
 
 DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'dataset')
 
-def get_movie_info(line):
+def get_movie_info_tmdb(line):
 	'''
 		input:
 			- line é uma linha da tabela de dados no formato de lista
@@ -16,6 +16,7 @@ def get_movie_info(line):
 	try:
 		# Constroi o objeto
 		movie = {}
+		print(line)
 		if len(line) > 16:
 			# Nome em inglês
 			movie['name'] = line[17]
@@ -43,6 +44,34 @@ def get_movie_info(line):
 	except:
 		return {}
 
+def get_movie_info_wiki(line):
+	'''
+		input:
+			- line é uma linha da tabela de dados no formato de lista
+		output:
+			- objeto contendo informações de nome, tagline, overview, keywords, e genres do filme
+		
+		cria um objeto filme com os dados da linha da tabela
+	'''
+	try:
+		# Constroi o objeto
+		movie = {}
+		# Nome
+		movie['name'] = line[1]
+		# Plot
+		movie['overview'] = line[-1]
+		if len(movie['overview']) < 20:
+			raise
+		## Palavras chave
+		movie['keywords'] = []
+		## Gêneros
+		movie['genres'] = []
+		if line[5] != 'unknown':
+			movie['genres'] = line[5].split()
+		return movie
+	except:
+		return {}
+
 def read_movies(path, display_quantity=False, limit=-1):
 	'''
 		input:
@@ -61,7 +90,7 @@ def read_movies(path, display_quantity=False, limit=-1):
 		csvdata = csv.reader(f, delimiter=',', quoting=csv.QUOTE_MINIMAL)
 		for line in csvdata:
 			num_movies += 1
-			m = get_movie_info(line)
+			m = get_movie_info_wiki(line)
 			# Adiciona apenas se tiver informação
 			if m!= {}:
 				movies.append(m)
@@ -85,5 +114,5 @@ def save_data(data, path):
 		json.dump(data, f)
 
 if __name__ == "__main__":
-	movies = read_movies(os.path.join(DIR, 'tmdb_5000_movies.csv'), True)
-	save_data(movies, os.path.join(DIR, 'tmdb_5000_movies.json') )
+	movies = read_movies(os.path.join(DIR, 'wiki_movie_plots_deduped.csv'), True)
+	save_data(movies, os.path.join(DIR, 'wiki_movie_plots_deduped.json') )
