@@ -60,7 +60,7 @@ def compute_serial_matrix(dist_mat,method="ward"):
 
 if __name__ == '__main__':
     # Importa a matriz de distanciamento
-    dist_matrix = np.load(os.path.join(DIR, 'wiki_movie_plots_deduped.npy'))
+    dist_matrix = np.load(os.path.join(DIR, 'tmdb_5000_movies.npy'))
     # Argumento de método
     method = "ward"
     if len(sys.argv) == 2:

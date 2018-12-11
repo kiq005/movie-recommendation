@@ -16,7 +16,6 @@ def get_movie_info_tmdb(line):
 	try:
 		# Constroi o objeto
 		movie = {}
-		print(line)
 		if len(line) > 16:
 			# Nome em inglês
 			movie['name'] = line[17]
@@ -90,7 +89,7 @@ def read_movies(path, display_quantity=False, limit=-1):
 		csvdata = csv.reader(f, delimiter=',', quoting=csv.QUOTE_MINIMAL)
 		for line in csvdata:
 			num_movies += 1
-			m = get_movie_info_wiki(line)
+			m = get_movie_info_tmdb(line)
 			# Adiciona apenas se tiver informação
 			if m!= {}:
 				movies.append(m)
@@ -114,5 +113,5 @@ def save_data(data, path):
 		json.dump(data, f)
 
 if __name__ == "__main__":
-	movies = read_movies(os.path.join(DIR, 'wiki_movie_plots_deduped.csv'), True)
-	save_data(movies, os.path.join(DIR, 'wiki_movie_plots_deduped.json') )
+	movies = read_movies(os.path.join(DIR, 'tmdb_5000_movies.csv'), True)
+	save_data(movies, os.path.join(DIR, 'tmdb_5000_movies.json') )
