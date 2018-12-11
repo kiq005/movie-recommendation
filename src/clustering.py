@@ -59,16 +59,26 @@ def compute_serial_matrix(dist_mat,method="ward"):
 
 
 if __name__ == '__main__':
-    # Importa a matriz de distanciamento
-    dist_matrix = np.load(os.path.join(DIR, 'tmdb_5000_movies.npy'))
-    # Argumento de método
+    # Argumento de método e nome do arquivo
     method = "ward"
-    if len(sys.argv) == 2:
+    if len(sys.argv) == 3:
         if sys.argv[1] in methods:
             method = sys.argv[1]
         else:
-            print("Methods:", ', '.join(methods))
+            print("Uso: clustering.py método arquivo")
+            print("Métodos:", ', '.join(methods))
             exit(-1)
+        file_name = sys.argv[2]
+    else:
+        print("Uso: clustering.py método arquivo")
+        print("Métodos:", ', '.join(methods))
+        exit(-1)
+    # Importa a matriz de distanciamento
+    try:
+        dist_matrix = np.load(os.path.join(DIR, file_name))
+    except:
+        print("Erro na leitura do arquivo '%s'"%(file_name))
+        exit(-1)
     # Ordena a matriz
     dist_matrix, res_order, res_linkage = compute_serial_matrix(dist_matrix,method)
     #print(dist_matrix)

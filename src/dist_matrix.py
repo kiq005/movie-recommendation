@@ -101,12 +101,14 @@ if __name__ == '__main__':
 	if VERBOSE: print("Bigramas:", len(tokens))
 	# Constroi a matriz de distância
 	if VERBOSE: print("Construindo matriz de distância...")
-	dist_matrix = np.zeros([len(tokens), len(tokens)], dtype=float)
-	for i, movie_a in enumerate(tokens):
-		for j, movie_b in enumerate(tokens):
-			dist_matrix[i][j] =  compare_bigrams( movie_a, movie_b )
-	if VERBOSE: print("Matriz:", np.shape(dist_matrix))
-	# Exporta a matrix para um arquivo
-	np.save(os.path.join(DIR, 'tmdb_5000_movies.npy'), dist_matrix) # Binário
-	np.savetxt(os.path.join(DIR, 'tmdb_5000_movies.txt'), dist_matrix) # Texto
+	for method in [nltk.binary_distance, nltk.jaccard_distance, nltk.masi_distance]:
+		print("Método:", method.__name__)
+		dist_matrix = np.zeros([len(tokens), len(tokens)], dtype=float)
+		for i, movie_a in enumerate(tokens):
+			for j, movie_b in enumerate(tokens):
+				dist_matrix[i][j] =  compare_bigrams( movie_a, movie_b, method)
+		if VERBOSE: print("Matriz:", np.shape(dist_matrix))
+		# Exporta a matrix para um arquivo
+		np.save(os.path.join(DIR, 'tmdb_5000_movies_%s.npy'%(method.__name__)), dist_matrix) # Binário
+		np.savetxt(os.path.join(DIR, 'tmdb_5000_movies_%s.txt'%(method.__name__)), dist_matrix) # Texto
 
