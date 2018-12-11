@@ -8,7 +8,7 @@ VERBOSE = True
 DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'dataset')
 regex = r"[-'a-zA-ZÀ-ÖØ-öø-ÿ]+"
 
-def get_tokens(text, language):
+def get_tokens(text, language='english'):
 	'''
 		input:
 			- text é o texto o qual se deseja obter os tokens
@@ -20,7 +20,7 @@ def get_tokens(text, language):
 	# Obtém as palavras, removendo pontuações e números
 	words = re.findall(regex, text)
 	# Remove stop words
-	words = [word for word in words if word not in nltk.corpus.stopwords.words(language)]
+	words = [word.lower() for word in words if word.lower() not in nltk.corpus.stopwords.words(language)]
 	return words
 
 def get_bigrams(text, language='english'):
@@ -53,7 +53,7 @@ def quad(val):
 			- o valor numérico entre 0 e 1
 		output:
 			- o valor calculado entre 0 e 1
-		retorna um valor linear do tipo f(x)=-x²+2x
+		aplica e retorna o valor de f(x)=-x²+2x
 	'''
 	return -(val*val)+2*val
 
@@ -71,11 +71,23 @@ def compare_bigrams(set_a, set_b, method=nltk.jaccard_distance, func=quad):
 	'''
 	return func(1 - method(set_a, set_b))
 
+def get_data(file_name):
+	'''
+		input:
+			- file_name nome no arquivo na pasta dataset para se obter os dados
+		output:
+			- um dict com os dados lidos do arquivo
+		lê e retorna os dados de um arquivo .json
+	'''
+	data = None
+	with open(os.path.join(DIR, file_name)) as file:
+		data = json.load(file)
+	return data
+
 if __name__ == '__main__':
 	# Lê dataset
 	if VERBOSE: print("Lendo dataset...")
-	with open(os.path.join(DIR, 'tmdb_5000_movies.json')) as file:
-		data = json.load(file)
+	data = get_data('tmdb_5000_movies.json')
 	# Obtém a lista de bigramas de cada overview
 	if VERBOSE: print("Obtendo tokens...")
 	tokens = []
