@@ -15,12 +15,20 @@ def e_msg():
 
 def generate_dendrogram(link, method='ward'):
 	Z = hierarchy.linkage(link, method)
+	dn = hierarchy.dendrogram(Z)
 	plt.figure(figsize=(25,10))
 	plt.xlabel('movie')
 	plt.ylabel('distance')
-	dn = hierarchy.dendrogram(Z)
 	hierarchy.set_link_color_palette(['m', 'c', 'y', 'k'])
 	plt.savefig(os.path.join(DIR, 'dendrogram_%s.png')%(method))
+
+def get_clusters(link, method='ward', criterion='distance', max_d=2):
+	Z = hierarchy.linkage(link, method)
+	dn = hierarchy.dendrogram(Z)
+	clusters = []
+	for d in range(2,100,10):
+		clusters.append(hierarchy.fcluster(Z, d, criterion))
+	return clusters
 
 if __name__ == '__main__':
 	# Carrega os dados com base no argumento passado
@@ -39,5 +47,6 @@ if __name__ == '__main__':
 		print("Erro ao ler dados dos cluters, os arquivos existem?")
 		exit(-1)
 	
-	generate_dendrogram(res_linkage_, method)
-
+	#generate_dendrogram(res_linkage, method)
+	clusters = get_clusters(res_linkage, method)
+	np.save(os.path.join(DIR, 'clusters_data.npy'), clusters)
