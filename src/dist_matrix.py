@@ -69,6 +69,8 @@ def compare_bigrams(set_a, set_b, method=nltk.jaccard_distance, func=quad):
 			- o valor de distância calculado
 		calcula a distância entre os conjuntos set_a e set_b, com base no method escalonado pela func
 	'''
+	if method == nltk.edit_distance:
+		return func(1 - method(list(set_a), list(set_b)))
 	return func(1 - method(set_a, set_b))
 
 def get_data(file_name):

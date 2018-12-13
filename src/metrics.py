@@ -3,6 +3,8 @@
 import dist_matrix
 from sklearn.feature_extraction.text import TfidfVectorizer
 from collections import Counter
+import nltk
+import numpy as np
 
 def common_elements(arr, num):
 	return Counter(arr).most_common(num)
@@ -81,6 +83,7 @@ if __name__ == '__main__':
 	# Collect metrics
 	lo = longest_overview(data)
 	so = shortest_overview(data)
+
 	# Print data
 	print("-- Shortest Overview --")
 	print(so['name'])

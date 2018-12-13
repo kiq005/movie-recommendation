@@ -56,8 +56,6 @@ def compute_serial_matrix(dist_mat,method="ward"):
     
     return seriated_dist, res_order, res_linkage
 
-
-
 if __name__ == '__main__':
     # Argumento de método e nome do arquivo
     method = "ward"
@@ -90,5 +88,10 @@ if __name__ == '__main__':
     plt.colorbar()
     plt.xlim([0,N])
     plt.ylim([0,N])
-    ##plt.show()
+    #plt.show()
     plt.savefig(os.path.join(DIR, 'clusters_%s.png')%(method))
+    # Salva resultados
+    np.save(os.path.join(DIR, 'dist_matrix_%s.npy'%(method)), dist_matrix) # Binário
+    np.save(os.path.join(DIR, 'res_order_%s.npy'%(method)), res_order) # Binário
+    np.save(os.path.join(DIR, 'res_linkage_%s.npy'%(method)), res_linkage) # Binário
+
