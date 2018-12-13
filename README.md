@@ -2,7 +2,6 @@
 Um sistema inteligente de recomendação de filmes.
 
 # Dados
-A importância da remoção de _stop words_ está relacionada
 
 ### Frequência de palavras:
 Word | Count | Word | Count
@@ -25,15 +24,28 @@ world | 568 | story | 450
 ![CLOUD](assets/tokens_cloud.png)
 
 # Clusters
-Método: ward
-![WARD](assets/clusters_ward.png)
 
-Método: single
-![SINGLE](assets/clusters_single.png)
+### Jaccard Distance
+Método   | Matriz de Distância | Dendrograma
+-------- | ------------------- | -----------
+Single   | ![](assets/clusters_jaccard_distance_single.png) | ![](assets/dendrogram_jaccard_distance_single.png)
+Complete | ![](assets/clusters_jaccard_distance_complete.png) | ![](assets/dendrogram_jaccard_distance_complete.png)
+Average  | ![](assets/clusters_jaccard_distance_average.png) | ![](assets/dendrogram_jaccard_distance_average.png)
+Ward     | ![](assets/clusters_jaccard_distance_ward.png) | ![](assets/dendrogram_jaccard_distance_ward.png)
 
-Método: average
-![AVERAGE](assets/clusters_average.png)
+### Masi Distance
+Método   | Matriz de Distância | Dendrograma
+-------- | ------------------- | -----------
+Single   | ![](assets/clusters_masi_distance_single.png) | ![](assets/dendrogram_masi_distance_single.png)
+Complete | ![](assets/clusters_masi_distance_complete.png) | ![](assets/dendrogram_masi_distance_complete.png)
+Average  | ![](assets/clusters_masi_distance_average.png) | ![](assets/dendrogram_masi_distance_average.png)
+Ward     | ![](assets/clusters_masi_distance_ward.png) | ![](assets/dendrogram_masi_distance_ward.png)
 
-Método: complete
-![COMPLETE](assets/clusters_complete.png)
+### Edit Distance
+Método   | Matriz de Distância | Dendrograma
+-------- | ------------------- | -----------
+Single   | ![](assets/clusters_edit_distance_single.png) | ![](assets/dendrogram_edit_distance_single.png)
+Complete | ![](assets/clusters_edit_distance_complete.png) | ![](assets/dendrogram_edit_distance_complete.png)
+Average  | ![](assets/clusters_edit_distance_average.png) | ![](assets/dendrogram_edit_distance_average.png)
+Ward     | ![](assets/clusters_edit_distance_ward.png) | ![](assets/dendrogram_edit_distance_ward.png)
 
