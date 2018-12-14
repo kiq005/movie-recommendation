@@ -3,13 +3,25 @@
 import os, sys, json
 import numpy as np
 
-VERBOSE = False
+VERBOSE = True
 DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'dataset')
+
+def e_msg():
+	print("Uso: recommend.py <clusters_data.py>")
+	exit(-1)
 
 if __name__ == '__main__':
 	if VERBOSE: print("Carregando dados...")
 	# Load clusters
-	clusters_data = np.load(os.path.join(DIR, 'clusters_data.npy'))
+	if len(sys.argv) == 2:
+		cluster_file = sys.argv[1]
+	else:
+		e_msg()
+	try:
+		clusters_data = np.load(os.path.join(DIR, cluster_file))
+	except:
+		print("Erro ao ler arquivo %s, o arquivo existe?"%(cluster_file))
+		e_msg()
 	# Load user data
 	with open(os.path.join(DIR, 'user_movies.json')) as file:
 		user_movies = json.load(file)
