@@ -1,19 +1,25 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+'''
+Obtém os dados do usuário
+'''
 import requests, webbrowser, os, sys, json
 
 DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'dataset')
 API_KEY = ""
 
-def get_details(session_id):
-	url = "https://api.themoviedb.org/3/account?api_key=%s&session_id=%s"%(API_KEY, session_id)
-	r = requests.get(url)
-	if r.status_code == 200:
-		return r.json()
-	else:
-		print("Error:", r.status_code)
-		print(r.json()['status_message'])
-		return None
-
 def get_session(session_token):
+	'''
+		input:
+			- session_token é o token de acesso obtido no processo de autenticação
+			do usuário
+        output:
+            - None no caso de erro no processo de obtenção do id
+			- id no caso de sucesso no processo de obtenção
+
+        get_session realiza uma requisição de um id de sessão onde as demais
+		chamadas serão realizadas, e retorna o id em caso de sucesso
+    '''
 	url = "https://api.themoviedb.org/3/authentication/session/new?api_key=%s"%(API_KEY)
 	body = {"request_token":session_token}
 	r = requests.post(url, data=body)
@@ -23,9 +29,41 @@ def get_session(session_token):
 		print("Error:", r.status_code)
 		print(r.json()['status_message'])
 		return None
-	
+
+def get_details(session_id):
+    '''
+		input:
+			- session_id é o id da sessão com a autenticação confirmada
+        output:
+            - None no caso de erro no processo de obtenção dos dados do usuário
+			- dict com dados no usuário no casso de sucesso no processo de obtenção
+
+        get_details realiza uma chamada para obter os dados do usuário, e retorna
+		um dict com as informações no caso de sucesso
+    '''
+	url = "https://api.themoviedb.org/3/account?api_key=%s&session_id=%s"%(API_KEY, session_id)
+	r = requests.get(url)
+	if r.status_code == 200:
+		return r.json()
+	else:
+		print("Error:", r.status_code)
+		print(r.json()['status_message'])
+		return None
 
 def get_ranked(user_id, session_id):
+	'''
+		input:
+			- session_id é o id da sessão com a autenticação confirmada
+			- user_id é o id do usuário para se obter dos filmes ranqueados
+        output:
+            - None no caso de erro no processo de obtenção dos dados
+			- rank com uma lista de filmes ranqueados pelo usuário, no caso
+			de sucesso no processo de obtenção
+
+        get_ranked realiza diversas chamadas para obter a lista de todos os filmes
+		ranqueados pelo usuário, retornando a lista caso todas as chamadas sejam
+		realizadas com sucesso
+    '''
 	rank = []
 	p_num = 1
 	while True:
@@ -79,4 +117,3 @@ if __name__ == '__main__':
 	# Save to file
 	with open(os.path.join(DIR, 'user_movies.json'), 'w') as file:
 		json.dump(rank, file)
-		
