@@ -9,14 +9,14 @@ DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'dataset')
 API_KEY = ""
 
 def get_token():
-    '''
-        output:
-            - None no caso de erro no processo de obtenção do token
+	'''
+		output:
+			- None no caso de erro no processo de obtenção do token
 			- número do token no caso de sucesso no processo de obtenção
 
-        get_token realiza uma requisição de um token de acesso e retorna o token
+		get_token realiza uma requisição de um token de acesso e retorna o token
 		em caso de sucesso
-    '''
+	'''
 	url = "https://api.themoviedb.org/3/authentication/token/new?api_key=%s"%(API_KEY)
 	r = requests.get(url)
 	if r.status_code == 200:
