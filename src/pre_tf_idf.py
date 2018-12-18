@@ -1,19 +1,21 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+'''
+Atua sobre clusters para obter palavras mais relevantes
+'''
 import pandas as pd
 import json
 
 def get_tuples(db):
-    """
-    Gets "tuple" (movie_name, clusters) for a given database
-
-    Parameters:
-    -----------
-    db : list
-
-    Returns:
-    --------
-    name_clust : list
-    """
-
+	'''
+		input:
+			- db é uma lista de filmes
+		output:
+			- name_clust é uma lista com um par contendo o nome e
+            clusters dos filmes
+		get_tuples retorna uma lista de pares com nome e clusters
+        de um filme dado uma base de dados
+	'''
     df = pd.DataFrame(db)
 
     #get names
@@ -29,19 +31,16 @@ def get_tuples(db):
     return name_clust
 
 def cluster_list(name_clust, cluster_number):
-    """
-    Returns list of movies in same cluster.
-
-    Parameters:
-    -----------
-    name_clust : list
-            (movie_name, cluster) list
-
-    Returns:
-    --------
-    mv_clus : list
-            list of movies in the same cluster
-    """
+	'''
+		input:
+			- name_clust é uma lista de pares com nome e clusters
+            de filmes
+			- cluster_number é o cluster em que se está interessado
+            em analisar
+		output:
+			- mv_clus é uma lista com os filmes no mesmo cluster
+		cluster_list retorna uma lista de filmes no mesmo cluster
+	'''
     size = len(name_clust)
 
     mv_clus = []
@@ -54,20 +53,14 @@ def cluster_list(name_clust, cluster_number):
     return mv_clus
 
 def get_sinopses(mv_clus):
-    """
-    Returns sinopses as text of a given movies
-
-    Parameters:
-    -----------
-    mv_clus : list
-            list of movies
-
-    Returns:
-    --------
-    sinopse : list
-            sinopse (text)
-    """
-
+	'''
+		input:
+			- mv_clus é uma lista de filmes em um cluster
+		output:
+			- sinopse uma lista com as sinopses dos filmes
+		get_sinopses retorna uma lista com as sinopses de
+        uma lista de filmes
+	'''
     movie_sinopse_list = []
     clustered_movies = mv_clus
 

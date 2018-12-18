@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+'''
+Converte os dados de um dataset em formato csv para formato json
+'''
 import re, csv, json, os
 
 DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'dataset')
@@ -10,8 +13,8 @@ def get_movie_info_tmdb(line):
 			- line é uma linha da tabela de dados no formato de lista
 		output:
 			- objeto contendo informações de nome, tagline, overview, keywords, e genres do filme
-		
-		cria um objeto filme com os dados da linha da tabela
+
+		get_movie_info_tmdb cria um objeto filme com os dados da linha da tabela
 	'''
 	try:
 		# Constroi o objeto
@@ -49,8 +52,8 @@ def get_movie_info_wiki(line):
 			- line é uma linha da tabela de dados no formato de lista
 		output:
 			- objeto contendo informações de nome, tagline, overview, keywords, e genres do filme
-		
-		cria um objeto filme com os dados da linha da tabela
+
+		get_movie_info_wiki cria um objeto filme com os dados da linha da tabela
 	'''
 	try:
 		# Constroi o objeto
@@ -79,8 +82,8 @@ def read_movies(path, display_quantity=False, limit=-1):
 			- limit quando positivo, indica a quantidade máxima de filmes a serem listados, utilize para depuração
 		output:
 			- uma lista de objetos filme, construídos pela função get_movie_info
-		
-		retorna uma uma lista de filmes com as informações relevantes para a análise
+
+		read_movies retorna uma uma lista de filmes com as informações relevantes para a análise
 	'''
 	movies = []
 	num_movies = 0
@@ -106,8 +109,8 @@ def save_data(data, path):
 		input:
 			- data são os dados a serem salvos
 			- path é o caminho do arquivo
-		
-		salva os dados para um arquivo no formato .json
+
+		save_data salva os dados para um arquivo no formato .json
 	'''
 	with open(path, 'w') as f:
 		json.dump(data, f)

@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+'''
+Criação das matrizes de distância
+'''
 import re, json, os
 import numpy as np
 import nltk
@@ -15,7 +18,7 @@ def get_tokens(text, language='english'):
 			- language é o idioma do texto
 		output:
 			- uma lista de tokens
-		Obtém uma lista de tokens sem stop words
+		get_tokens obtém uma lista de tokens sem stop words
 	'''
 	# Obtém as palavras, removendo pontuações e números
 	words = re.findall(regex, text)
@@ -30,7 +33,7 @@ def get_bigrams(text, language='english'):
 			- language é o idioma do texto
 		output:
 			- uma lista de bigramas
-		obtém uma lista de bigramas construidos com base na função get_tokens
+		get_bigrams obtém uma lista de bigramas construidos com base na função get_tokens
 	'''
 	# Obtém os tokens
 	tokens = get_tokens(text, language)
@@ -43,7 +46,7 @@ def linear(val):
 			- o valor numérico entre 0 e 1
 		output:
 			- o valor calculado entre 0 e 1
-		retorna um valor linear do tipo f(x)=x
+		linear retorna um valor linear do tipo f(x)=x
 	'''
 	return val
 
@@ -53,7 +56,7 @@ def quad(val):
 			- o valor numérico entre 0 e 1
 		output:
 			- o valor calculado entre 0 e 1
-		aplica e retorna o valor de f(x)=-x²+2x
+		quad aplica e retorna o valor de f(x)=-x²+2x
 	'''
 	return -(val*val)+2*val
 
@@ -67,7 +70,7 @@ def compare_bigrams(set_a, set_b, method=nltk.jaccard_distance, func=quad):
 			- func é a função de escalonamento do valor de distância obtido
 		output:
 			- o valor de distância calculado
-		calcula a distância entre os conjuntos set_a e set_b, com base no method escalonado pela func
+		compare_bigrams calcula a distância entre os conjuntos set_a e set_b, com base no method escalonado pela func
 	'''
 	if method == nltk.edit_distance:
 		return func(1 - method(list(set_a), list(set_b)))
@@ -79,7 +82,7 @@ def get_data(file_name):
 			- file_name nome no arquivo na pasta dataset para se obter os dados
 		output:
 			- um dict com os dados lidos do arquivo
-		lê e retorna os dados de um arquivo .json
+		get_data lê e retorna os dados de um arquivo .json
 	'''
 	data = None
 	with open(os.path.join(DIR, file_name)) as file:
@@ -99,7 +102,6 @@ if __name__ == '__main__':
 			tokens.append(b)
 		else:
 			print('ATENÇÃO: Não foi possível obter bigramas do filme "', movie['name']['english'], '"')
-			#print(b, movie)
 	if VERBOSE: print("Bigramas:", len(tokens))
 	# Constroi a matriz de distância
 	if VERBOSE: print("Construindo matriz de distância...")
@@ -113,4 +115,3 @@ if __name__ == '__main__':
 		# Exporta a matrix para um arquivo
 		np.save(os.path.join(DIR, 'tmdb_5000_movies_%s.npy'%(method.__name__)), dist_matrix) # Binário
 		np.savetxt(os.path.join(DIR, 'tmdb_5000_movies_%s.txt'%(method.__name__)), dist_matrix) # Texto
-

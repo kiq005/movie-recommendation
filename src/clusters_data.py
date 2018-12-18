@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+'''
+Gera as informações de clusters dos filmes
+'''
 import os, sys
 import numpy as np
 import matplotlib.pyplot as plt
@@ -9,11 +12,22 @@ DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'dataset')
 methods = ["ward","single","average","complete"]
 
 def e_msg():
+	'''
+		e_msg imprime uma mensagem com instruções de utilização do
+		programa, e finaliza a execução
+	'''
 	print("Uso: clusters_data.py método")
 	print("Métodos:", ', '.join(methods))
 	exit(-1)
 
 def generate_dendrogram(link, method='ward'):
+	'''
+        input:
+            - link a árvore hierárquica (dendrogram)
+			- method = ["ward","single","average","complete"]
+		generate_dendrogram gera a imagens de dendrograma de
+		uma árvore hierárquica
+	'''
 	Z = hierarchy.linkage(link, method)
 	dn = hierarchy.dendrogram(Z)
 	plt.figure(figsize=(25,10))
@@ -22,7 +36,17 @@ def generate_dendrogram(link, method='ward'):
 	hierarchy.set_link_color_palette(['m', 'c', 'y', 'k'])
 	plt.savefig(os.path.join(DIR, 'dendrogram_%s.png')%(method))
 
-def get_clusters(link, method='ward', criterion='distance', max_d=2):
+def get_clusters(link, method='ward', criterion='distance'):
+	'''
+        input:
+            - link a árvore hierárquica (dendrogram)
+			- method = ["ward","single","average","complete"]
+			- criterion = ["inconsistent", "distance", "maxclust", "monocrit", "maxclust_monocrit"]
+		output:
+			- clusters é uma lista de clusters
+		get_clusters gera uma lista de clusters para vários
+		níveis de uma árvore hierárquica
+	'''
 	Z = hierarchy.linkage(link, method)
 	dn = hierarchy.dendrogram(Z)
 	clusters = []
@@ -40,13 +64,10 @@ if __name__ == '__main__':
 	else:
 		e_msg()
 	try:
-		#dist_matrix = np.load(os.path.join(DIR, 'dist_matrix_%s.npy'%(method)))
-		#res_order = np.load(os.path.join(DIR, 'res_order_%s.npy'%(method)))
 		res_linkage = np.load(os.path.join(DIR, 'res_linkage_%s.npy'%(method)))
 	except:
 		print("Erro ao ler dados dos cluters, os arquivos existem?")
 		exit(-1)
-	
-	#generate_dendrogram(res_linkage, method)
+
 	clusters = get_clusters(res_linkage, method)
 	np.save(os.path.join(DIR, 'clusters_data.npy'), clusters)

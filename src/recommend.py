@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+'''
+Recomenda filmes para o usuário
+'''
 import os, sys, json
 import numpy as np
 
@@ -7,7 +10,11 @@ VERBOSE = True
 DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'dataset')
 
 def e_msg():
-	print("Uso: recommend.py <clusters_data.py>")
+	'''
+		e_msg exibe uma mensagem com instruções de uso do programa
+		e finaliza a execução
+	'''
+	print("Uso: recommend.py <clusters_data.json>")
 	exit(-1)
 
 if __name__ == '__main__':

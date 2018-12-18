@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+'''
+Realiza todo o processo de clusterização, desde a obtenção dos dados do dataset no formato json, até a construção dos clusters e geração de imagens
+'''
 import dist_matrix
 import clustering
 import clusters_data
@@ -17,6 +20,14 @@ sys.setrecursionlimit(10000)
 DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'dataset')
 
 def generate_sub(method_cl,method_bg,dm):
+	'''
+		input:
+			- method_cl é o nome do método de clusterização
+			- method_bg é a função com o método de determinação da
+			  distância entre conjuntos
+			- dm é a matriz de distância
+		generate_sub
+	'''
 	if VERBOSE: print("Clustering:", method_bg.__name__, method_cl)
 	dist_matrix, res_order, res_linkage = clustering.compute_serial_matrix(dm,method_cl)
 	# Exibe a matriz
@@ -46,6 +57,15 @@ def generate_sub(method_cl,method_bg,dm):
 	return
 
 def generate(method_bg, bg):
+	'''
+		input:
+			- method_bg é a função com o método de determinação da
+			  distância entre conjuntos
+			- bg é uma lista contendo as listas de bigramas dos sumários
+		generate gera uma matriz de distância com base em um método de distância
+		entre conjuntos, e inicia um processo para clusterização com base em uma
+		lista de métodos
+	'''
 	if VERBOSE: print("Método:", method_bg.__name__)
 	dm = np.zeros([len(bg), len(bg)], dtype=float)
 	for i, movie_a in enumerate(bg):
@@ -77,7 +97,7 @@ if __name__ == '__main__':
 	del data
 	# Constroi matriz de distância
 	processes = []
-	for method_bg in [nltk.jaccard_distance, nltk.masi_distance]: # missing: nltk.edit_distance, too slow
+	for method_bg in [nltk.jaccard_distance, nltk.masi_distance]:
 		p = Process(target=generate, args=(method_bg,bg,))
 		p.start()
 		processes.append(p)
